@@ -1,0 +1,24 @@
+{
+  "name": "node-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Otloir/Node-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Otloir/Node-project/issues"
+  },
+  "homepage": "https://github.com/Otloir/Node-project#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
