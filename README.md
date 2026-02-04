@@ -9,7 +9,7 @@ Lingon is a Wordle inspired school project.
 
 ## Getting Started
 
-These instructions will help you set up the project locally.
+TBD
 
 
 ## Installation
@@ -34,3 +34,4 @@ node manue.js
 ## License
 
 This project is licensed under the MIT License.
+
