@@ -18,20 +18,56 @@ TBD
 
 git clone https://github.com/Otloir/Lingon.git
 
-### move into the directory
-
-cd Lingon
-
 ### install dependencies
 
-TBD
+#### Installing NPM:
+
+`
+npm init -i
+`
+
+#### Packages:
+
+Chalk:
+
+`
+npm install chalk
+`
+
+
+Inquirer
+
+`
+npm install @inquirer/prompts
+`
+
+
+figlet
+
+`
+npm install figlet
+`
+
+
+MongoDB
 
 
 ## Usage
 
 node manue.js
 
+## Credits
+
+
+Chalk: https://www.npmjs.com/package/chalk
+
+Inquirer: https://www.npmjs.com/package/@inquirer/prompts
+
+figlet: https://www.npmjs.com/package/figlet 
+
+
 ## License
 
 This project is licensed under the MIT License.
+
 
