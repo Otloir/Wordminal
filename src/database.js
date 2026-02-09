@@ -1,15 +1,16 @@
 import { MongoClient, ObjectId } from "mongodb";
+
 import "dotenv/config";
 
 const uri = process.env.MONGO_URI;
 
-//Error if no URI
 if (!uri) {
   throw new Error("MONGO_URI not set in .env");
 }
 
 let client;
 let db;
+
 
 //Creates a client if it doesn't exist
 export async function connectDB(retries = 3) {
