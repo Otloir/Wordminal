@@ -40,13 +40,6 @@ export async function difficulty() {
   return selectedDifficulty;
 }
 
-/*export async function getRandomWord() {
-  //needs database connection
-
-  const correctWord = "LINGON";
-  return correctWord;
-}*/
-
   //Feature that gets a random word by difficulty name
 export async function getRandomWordByDifficultyName(difficultyName) {
   const db = await connectDB(); 
@@ -70,25 +63,6 @@ export async function getRandomWordByDifficultyName(difficultyName) {
   return word ?? null;
     
 }
-
-/*export async function userGuess(word) {
-  // User input guess
-  const guess = await input({ message: `Guess:` });
-
-  // Check if the guess matches the correct word
-  const result = checkGuess(guess, word);
-
-  console.log(result);
-
-  if (guess.toUpperCase() === word.toUpperCase()) {
-    console.log("You won!");
-    return true;
-  } else {
-    console.log(`Game over! The word was ${word}`);
-    return false;
-  }
-}
-*/
 
 export async function userGuess(word, maxGuesses = 5) {
   let guessCount = 0;
@@ -162,33 +136,6 @@ export async function saveSession({ difficultyId, wordId, guessCount, win }) {
   return result.insertedId;
 }
 
-// Temporary placeholder mock gameplay loop (before real gameplay exists)
-/*export async function mockGameplay(maxGuesses = 5) {
-  let guessCount = 0;
-
-  for (let i = 1; i <= maxGuesses; i++) {
-    guessCount++;
-
-    //Fake guess mechanism
-    const guessedCorrectly = await confirm({
-      message: `Attempt ${i}/${maxGuesses}: Did you guess the word correctly?`,
-    });
-
-    if (guessedCorrectly) {
-      return {
-        win: true,
-        guessCount,
-      };
-    }
-  }
-
-  //Loses the game if all guesses are failed
-  return {
-    win: false,
-    guessCount: maxGuesses,
-  };
-}*/
-
     // End screen
 export async function showEndScreen({ win, word, guessCount }) {
   const text = await figlet.text(win ? "YOU WIN" : "YOU LOSE");
@@ -204,12 +151,11 @@ export async function showEndScreen({ win, word, guessCount }) {
   }
 }
 
-  //Runs one full game session
+//Runs one full game session
 export async function playGame() {
   //Chooses difficulty
   const selectedDifficulty = await difficulty();
 
-  //console.log("TESTING");
 
   //Gets a random word for that difficulty
   const word = await getRandomWordByDifficultyName(selectedDifficulty);
@@ -219,12 +165,13 @@ export async function playGame() {
     return;
   }
 
+  //THIS LINE IS A DEBUG TO MAKE SURE WE GOT A WORD, EUTHANISE BEFORE WE'RE DONE
   console.log(
     "The actual gameplay isn't in yet, but the word you would've been guessing is:",
     word.word
   );
 
-  //Temporary mock gameplay thing that keepts track of guesses
+  //Keeping track of guesses
   const { win, guessCount } = await userGuess(word.word, 5);
 
   //End screen
