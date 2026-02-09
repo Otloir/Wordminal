@@ -2,6 +2,7 @@ import figlet from "figlet";
 import { rawlist } from "@inquirer/prompts";
 import { confirm } from "@inquirer/prompts";
 import { select } from "@inquirer/prompts";
+import { input } from "@inquirer/prompts";
 
 // game introduction and and title
 export async function gameIntroduction() {
@@ -35,3 +36,53 @@ export async function difficulty() {
   });
 }
 
+export async function getRandomWord() {
+  //needs database connection
+
+  const correctWord = "LINGON";
+  return correctWord;
+}
+
+export async function userGuess(correctWord) {
+  // User input guess
+  const guess = await input({ message: `Guess:` });
+
+  // Check if the guess matches the correct word
+  const result = checkGuess(guess, correctWord);
+
+  console.log(result);
+
+  if (guess.toUpperCase() === correctWord.toUpperCase()) {
+    console.log("You won!");
+    return true;
+  } else {
+    console.log(`Game over! The word was ${correctWord}`);
+    return false;
+  }
+}
+
+function checkGuess(guess, correctWord) {
+  const answer = correctWord.toUpperCase();
+  const userGuess = guess.toUpperCase();
+  const result = [];
+  const splitAnwser = answer.split("");
+
+  for (let i = 0; i < userGuess.length; i++) {
+    if (userGuess[i] === answer[i]) {
+      result[i] = { letter: userGuess[i], status: "green" };
+      splitAnwser[i] = null;
+    }
+  }
+
+  for (let i = 0; i < userGuess.length; i++) {
+    if (result[i]) continue;
+    const splitGuess = splitAnwser.indexOf(userGuess[i]);
+    result[i] = {
+      letter: userGuess[i],
+      status: splitGuess !== -1 ? "yellow" : "gray",
+    };
+    if (splitGuess !== -1) splitAnwser[splitGuess] = null;
+  }
+
+  return result;
+}
