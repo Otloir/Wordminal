@@ -1,6 +1,7 @@
 import { rawlist } from "@inquirer/prompts";
 import { confirm } from "@inquirer/prompts";
 import * as functions from "./game/functions.js";
+import chalk from 'chalk';
 
 // Game introduction
 await functions.gameIntroduction();
@@ -19,3 +20,6 @@ if (start) {
   console.log("Goodbye!");
   process.exit();
 }
+
+
+
