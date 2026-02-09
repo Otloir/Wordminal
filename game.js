@@ -1,4 +1,4 @@
-// import { rawlist } from "@inquirer/prompts";
+import { rawlist } from "@inquirer/prompts";
 import { confirm } from "@inquirer/prompts";
 import * as functions from "./game/functions.js";
 
