@@ -2,6 +2,7 @@ import "dotenv/config";
 import { connectDB } from "./../src/database.js";
 import { select } from "@inquirer/prompts";
 import { input } from "@inquirer/prompts";
+import chalk from "chalk";
 
 
 // choose difficylty
@@ -53,18 +54,41 @@ export async function getRandomWordByDifficultyName(difficultyName) {
 
 export async function userGuess(word, maxGuesses = 5) {
   let guessCount = 0;
+  let attempt = 1;
 
-  for (let i = 1; i <= maxGuesses; i++) {
-    guessCount++;
+  while (attempt <= maxGuesses) {
 
-    // User input guess
     const guess = await input({
-      message: `Attempt ${i}/${maxGuesses} - Guess:`,
+      message: `Attempt ${attempt}/${maxGuesses} - Guess:`,
     });
+
+    // Only letters allowed
+    if (!/^[A-Za-z]+$/.test(guess)) {
+      console.log("Only english letters are allowed.");
+      continue;
+    }
+    // Must be exatcly 6 letters
+    if (guess.length !== 6) {
+      console.log("This word must be exactly 6 letters.");
+      continue; 
+    }
+
+    guessCount++;
+    attempt++;
 
     // Check guess
     const result = checkGuess(guess, word);
-    console.log(result);
+    console.log(formatResult(result));
+
+    function formatResult(result) {
+  return result
+    .map(({ letter, status }) => {
+      if (status === "green") return chalk.bgGreen.black(` ${letter} `);
+      if (status === "yellow") return chalk.bgYellow.black(` ${letter} `);
+      return chalk.bgGray.black(` ${letter} `);
+    })
+    .join(" ");
+}
 
     if (guess.toUpperCase() === word.toUpperCase()) {
       return {
