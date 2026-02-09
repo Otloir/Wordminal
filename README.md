@@ -7,9 +7,9 @@ Lingon is a Wordle inspired school project.
 
 - Six letter words
 
-## Getting Started
+## Start Game
 
-TBD
+To start the game, after you have downloaded the packages, open the game folder in the terminal and type `node game.js`!
 
 
 ## Installation
@@ -69,5 +69,6 @@ figlet: https://www.npmjs.com/package/figlet
 ## License
 
 This project is licensed under the MIT License.
+
 
 
