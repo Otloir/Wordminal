@@ -1,21 +1,8 @@
 import "dotenv/config";
-import figlet from "figlet";
 import { connectDB } from "./../src/database.js";
-
-import { rawlist } from "@inquirer/prompts";
-import { confirm } from "@inquirer/prompts";
 import { select } from "@inquirer/prompts";
 import { input } from "@inquirer/prompts";
 
-// game introduction and and title
-export async function gameIntroduction() {
-  const text = await figlet.text("Lingon!");
-  console.log(text);
-
-  console.log(
-    "Welcome to the Lingon! This is a Wordly inspired game! In Lingon, you get to guess a 6 letter word 5 times. If you get a letter correct in the right spot, it will turn green. If you get a letter correct but not in the right spot, it will turn yellow. And if the letters are not in the word, they will trun gray. If every letter turns green, you have won the game. Good luck!",
-  );
-}
 
 // choose difficylty
 export async function difficulty() {
@@ -80,7 +67,6 @@ export async function userGuess(word, maxGuesses = 5) {
     console.log(result);
 
     if (guess.toUpperCase() === word.toUpperCase()) {
-      console.log("You won!");
       return {
         win: true,
         guessCount,
@@ -89,7 +75,6 @@ export async function userGuess(word, maxGuesses = 5) {
   }
 
   // If all guesses are used
-  console.log(`Game over! The word was ${word}`);
   return {
     win: false,
     guessCount: maxGuesses,
@@ -146,60 +131,4 @@ export async function saveSession({ difficultyId, wordId, guessCount, win }) {
   });
 
   return result.insertedId;
-}
-
-    // End screen
-export async function showEndScreen({ win, word, guessCount }) {
-  const text = await figlet.text(win ? "YOU WIN" : "YOU LOSE");
-  console.log(text);
-
-  console.log(`The correct word was: ${word}`);
-  console.log(`Attempts used: ${guessCount}`);
-
-  if (win) {
-    console.log("Congratulations! You won!");
-  } else {
-    console.log("Better luck next time!");
-  }
-}
-
-//Runs one full game session
-export async function playGame() {
-  //Chooses difficulty
-  const selectedDifficulty = await difficulty();
-
-
-  //Gets a random word for that difficulty
-  const word = await getRandomWordByDifficultyName(selectedDifficulty);
-
-  if (!word) {
-    console.log("No word found for this difficulty.");
-    return;
-  }
-
-  //THIS LINE IS A DEBUG TO MAKE SURE WE GOT A WORD, EUTHANISE BEFORE WE'RE DONE
-  console.log(
-    "The actual gameplay isn't in yet, but the word you would've been guessing is:",
-    word.word
-  );
-
-  //Keeping track of guesses
-  const { win, guessCount } = await userGuess(word.word, 5);
-
-  //End screen
-  await showEndScreen({
-    win,
-    word: word.word,
-    guessCount,
-  });
-
-  //Saves session
-  await saveSession({
-    difficultyId: word.difficulty._id,
-    wordId: word._id,
-    guessCount,
-    win,
-  });
-
-  console.log("Session data saved!");
 }
