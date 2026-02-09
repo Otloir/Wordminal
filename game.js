@@ -8,8 +8,12 @@ await functions.gameIntroduction();
 const start = await confirm({ message: "Start Game?" });
 
 if (start) {
-  // Difficulty option
-  await functions.difficulty();
+  // Difficulty option and random word
+  // const difficulty = await functions.difficulty();
+  const correctWord = await functions.getRandomWord();
+
+  // User guess
+  await functions.userGuess(correctWord);
 } else {
   // Quit game
   console.log("Goodbye!");
