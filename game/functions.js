@@ -77,7 +77,7 @@ export async function userGuess(word, maxGuesses = 5) {
 
     // Only letters allowed
     if (!/^[A-Za-z]+$/.test(guess)) {
-      console.log("Only letters are allowed.");
+      console.log("Only english letters are allowed.");
       continue;
     }
     // Must be exatcly 6 letters
