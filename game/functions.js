@@ -1,4 +1,7 @@
+import "dotenv/config";
 import figlet from "figlet";
+import { connectDB } from "./../src/database.js";
+
 import { rawlist } from "@inquirer/prompts";
 import { confirm } from "@inquirer/prompts";
 import { select } from "@inquirer/prompts";
@@ -16,54 +19,86 @@ export async function gameIntroduction() {
 
 // choose difficylty
 export async function difficulty() {
-  const difficulty = await select({
+  const selectedDifficulty = await select({
     name: "difficulty",
     message: "Choose difficulty:",
     choices: [
       {
         name: "easy",
-        value: "1",
+        value: "easy",
       },
       {
         name: "medium",
-        value: "2",
+        value: "medium",
       },
       {
         name: "hard",
-        value: "3",
+        value: "hard",
       },
     ],
   });
+  return selectedDifficulty;
 }
 
-export async function getRandomWord() {
-  //needs database connection
+  //Feature that gets a random word by difficulty name
+export async function getRandomWordByDifficultyName(difficultyName) {
+  const db = await connectDB(); 
 
-  const correctWord = "LINGON";
-  return correctWord;
+  const [word] = await db.collection("words")
+    .aggregate([
+      {
+        $lookup: {
+          from: "difficulties",
+          localField: "difficultyId",
+          foreignField: "_id",
+          as: "difficulty"
+        }
+      },
+      { $unwind: "$difficulty" },
+      { $match: { "difficulty.name": difficultyName } },
+      { $sample: { size: 1 } }
+    ])
+  .toArray();
+
+  return word ?? null;
+    
 }
 
-export async function userGuess(correctWord) {
-  // User input guess
-  const guess = await input({ message: `Guess:` });
+export async function userGuess(word, maxGuesses = 5) {
+  let guessCount = 0;
 
-  // Check if the guess matches the correct word
-  const result = checkGuess(guess, correctWord);
+  for (let i = 1; i <= maxGuesses; i++) {
+    guessCount++;
 
-  console.log(result);
+    // User input guess
+    const guess = await input({
+      message: `Attempt ${i}/${maxGuesses} - Guess:`,
+    });
 
-  // If player won or not
-  if (guess.toUpperCase() === correctWord.toUpperCase()) {
-    console.log("You won!");
-    return true;
-  } else {
-    console.log(`Game over! The word was ${correctWord}`);
-    return false;
+    // Check guess
+    const result = checkGuess(guess, word);
+    console.log(result);
+
+    if (guess.toUpperCase() === word.toUpperCase()) {
+      console.log("You won!");
+      return {
+        win: true,
+        guessCount,
+      };
+    }
   }
+
+  // If all guesses are used
+  console.log(`Game over! The word was ${word}`);
+  return {
+    win: false,
+    guessCount: maxGuesses,
+  };
 }
 
-function checkGuess(guess, correctWord) {
-  const answer = correctWord.toUpperCase();
+
+function checkGuess(guess, word) {
+  const answer = word.toUpperCase();
   const userGuess = guess.toUpperCase();
   const result = [];
   const splitAnwser = answer.split("");
@@ -98,4 +133,73 @@ function checkGuess(guess, correctWord) {
   }
 
   return result;
+}
+
+export async function saveSession({ difficultyId, wordId, guessCount, win }) {
+  const db = await connectDB();
+
+  const result = await db.collection("sessions").insertOne({
+    difficultyId,
+    wordId,
+    guessCount,
+    win,
+  });
+
+  return result.insertedId;
+}
+
+    // End screen
+export async function showEndScreen({ win, word, guessCount }) {
+  const text = await figlet.text(win ? "YOU WIN" : "YOU LOSE");
+  console.log(text);
+
+  console.log(`The correct word was: ${word}`);
+  console.log(`Attempts used: ${guessCount}`);
+
+  if (win) {
+    console.log("Congratulations! You won!");
+  } else {
+    console.log("Better luck next time!");
+  }
+}
+
+//Runs one full game session
+export async function playGame() {
+  //Chooses difficulty
+  const selectedDifficulty = await difficulty();
+
+
+  //Gets a random word for that difficulty
+  const word = await getRandomWordByDifficultyName(selectedDifficulty);
+
+  if (!word) {
+    console.log("No word found for this difficulty.");
+    return;
+  }
+
+  //THIS LINE IS A DEBUG TO MAKE SURE WE GOT A WORD, EUTHANISE BEFORE WE'RE DONE
+  console.log(
+    "The actual gameplay isn't in yet, but the word you would've been guessing is:",
+    word.word
+  );
+
+  //Keeping track of guesses
+  const { win, guessCount } = await userGuess(word.word, 5);
+
+  //End screen
+  await showEndScreen({
+    win,
+    word: word.word,
+    guessCount,
+  });
+
+  //Saves session
+  await saveSession({
+    difficultyId: word.difficulty._id,
+    wordId: word._id,
+    guessCount,
+    win,
+  });
+
+  console.log("Session data saved!");
 }

@@ -1,21 +1,17 @@
-import { rawlist } from "@inquirer/prompts";
-import { confirm } from "@inquirer/prompts";
 import * as functions from "./game/functions.js";
+import { confirm } from "@inquirer/prompts";
 
-// Game introduction
 await functions.gameIntroduction();
 
-const start = await confirm({ message: "Start Game?" });
+let playAgain = await confirm({ message: "Start Game?" });
 
-if (start) {
-  // Difficulty option and random word
-  // const difficulty = await functions.difficulty();
-  const correctWord = await functions.getRandomWord();
+while (playAgain) {
+  await functions.playGame();
 
-  // User guess
-  await functions.userGuess(correctWord);
-} else {
-  // Quit game
-  console.log("Goodbye!");
-  process.exit();
+  playAgain = await confirm({
+    message: "Would you like to play again?",
+  });
 }
+
+console.log("Goodbye!");
+process.exit();
