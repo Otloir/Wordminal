@@ -103,21 +103,33 @@ function checkGuess(guess, word) {
   const result = [];
   const splitAnwser = answer.split("");
 
+  // checks if the letter correct and in the right place
   for (let i = 0; i < userGuess.length; i++) {
-    if (userGuess[i] === answer[i]) {
-      result[i] = { letter: userGuess[i], status: "green" };
+    const guessedLetter = userGuess[i];
+    const correctLetter = answer[i];
+
+    if (guessedLetter === correctLetter) {
+      result[i] = { letter: guessedLetter, status: "green" }; // letter is correct and in the right place
       splitAnwser[i] = null;
     }
   }
 
+  // checks if the letter exists in the word
   for (let i = 0; i < userGuess.length; i++) {
-    if (result[i]) continue;
-    const splitGuess = splitAnwser.indexOf(userGuess[i]);
-    result[i] = {
-      letter: userGuess[i],
-      status: splitGuess !== -1 ? "yellow" : "gray",
-    };
-    if (splitGuess !== -1) splitAnwser[splitGuess] = null;
+    if (result[i]) {
+      continue;
+    }
+
+    const guessedLetter = userGuess[i];
+
+    const position = splitAnwser.indexOf(guessedLetter);
+
+    if (position !== -1) {
+      result[i] = { letter: guessedLetter, status: "yellow" }; // letter exists in the word
+      splitAnwser[position] = null;
+    } else {
+      result[i] = { letter: guessedLetter, status: "gray" }; // letter is inccorrect
+    }
   }
 
   return result;
