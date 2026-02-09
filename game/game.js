@@ -15,12 +15,6 @@ export async function playGame() {
     return;
   }
 
-  //THIS LINE IS A DEBUG TO MAKE SURE WE GOT A WORD, EUTHANISE BEFORE WE'RE DONE
-  console.log(
-    "The actual gameplay isn't in yet, but the word you would've been guessing is:",
-    word.word
-  );
-
   //Keeping track of guesses
   const { win, guessCount } = await functions.userGuess(word.word, 5);
 
@@ -38,6 +32,4 @@ export async function playGame() {
     guessCount,
     win,
   });
-
-  console.log("Session data saved!");
 }
