@@ -98,31 +98,31 @@ node menu.js
 
 Node.js - JavaScript runtime environment
 
-Chalk - Terminal string styling and colorization
-
-Inquirer - Interactive command-line user interface
-
-Figlet - ASCII art text generator
-
 MongoDB - NoSQL database for persistent data storage
 
-dotenv - Environment variable configuration management
+[Chalk](https://www.npmjs.com/package/chalk) - Terminal string styling and colorization
+
+[Inquirer](https://www.npmjs.com/package/@inquirer/prompts) - Interactive command-line user interface
+
+[Figlet](https://www.npmjs.com/package/figlet) - ASCII art text generator
+
+[dotenv](https://www.npmjs.com/package/dotenv) - Environment variable configuration management
 
 
 ## Team
 
-@Otloir
+[@Otloir](https://github.com/Otloir)
 
-@OlofBjorn
+[@OlofBjorn](https://github.com/OlofBjorn)
 
-@alebri0616
-
-
-## License
-
-This project is licensed under the MIT License.
+[@alebri0616](https://github.com/alebri0616)
 
 
 ## Credits
 
 Original concept inspired by Wordle by Josh Wardle
+
+
+## License
+
+This project is licensed under the MIT License.
