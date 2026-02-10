@@ -1,7 +1,6 @@
 import "dotenv/config";
 import { connectDB } from "./../src/database.js";
-import { select } from "@inquirer/prompts";
-import { input } from "@inquirer/prompts";
+import { select, input } from "@inquirer/prompts";
 import chalk from "chalk";
 
 
