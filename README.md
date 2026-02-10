@@ -47,7 +47,7 @@ npm install dotenv
 Create a .env file in the project root directory with the following configuration:
 
 ```
-MONGODB_URI=your_mongodb_connection_string
+MONGO_URI=your_mongodb_connection_string
 ```
 
 
@@ -55,7 +55,7 @@ MONGODB_URI=your_mongodb_connection_string
 To start the game, type this command in your terminal:
 
 ```
-node menu.js
+node game.js
 ```
 
 
@@ -126,3 +126,4 @@ Original concept inspired by Wordle by Josh Wardle
 ## License
 
 This project is licensed under the MIT License.
+
