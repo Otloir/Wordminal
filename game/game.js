@@ -6,7 +6,6 @@ export async function playGame() {
   //Chooses difficulty
   const selectedDifficulty = await functions.difficulty();
 
-
   //Gets a random word for that difficulty
   const word = await functions.getRandomWordByDifficultyName(selectedDifficulty);
 

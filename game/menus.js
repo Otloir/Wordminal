@@ -5,11 +5,11 @@ import * as functions from "./functions.js";
 
 // game introduction and and title
 export async function gameIntroduction() {
-  const text = await figlet.text("Lingon!");
+  const text = await figlet.text("Wordminal!");
   console.log(chalk.bold.red(text));
 
   console.log(
-    "Welcome to the Lingon! This is a Wordly inspired game! In Lingon, you get to guess a 6 letter word 5 times. If you get a letter correct in the right spot, it will turn green. If you get a letter correct but not in the right spot, it will turn yellow. And if the letters are not in the word, they will trun gray. If every letter turns green, you have won the game. Good luck!",
+    "Welcome to the Wordminal! This is a Wordly inspired game! In Wordminal, you get to guess a 6 letter word 5 times. The correct word changes each round, and is decided by the chosen difficulty.\n\n How it works:\n- If you get a letter correct in the right spot, it will turn green. \n- If you get a letter correct but not in the right spot, it will turn yellow. \n- And if the letters are not in the word, they will trun gray. \n- If every letter turns green, you have won the game!\n\nGood luck! :D\n",
   );
 }
 
