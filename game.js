@@ -1,18 +1,35 @@
-//import * as functions from "./game/functions.js";
 import * as menus from "./game/menus.js";
 import * as game from "./game/game.js";
-import { confirm } from "@inquirer/prompts";
+import { select } from "@inquirer/prompts";
 
 await menus.gameIntroduction();
 
-let playAgain = await confirm({ message: "Start Game?" });
+let exit = false;
 
-while (playAgain) {
-  await game.playGame();
-
-  playAgain = await confirm({
-    message: "Would you like to play again?",
+while (!exit) {
+  const choice = await select({
+    message: "What would you like to do?",
+    choices: [
+      { name: "Start Game", value: "play" },
+      { name: "View Stats", value: "stats" },
+      { name: "Exit", value: "exit" },
+    ],
   });
+
+  switch (choice) {
+    case "play":
+      await game.playGame();
+      break;
+
+    case "stats": {
+      await menus.statsMenu();
+      break;
+    }
+
+    case "exit":
+      exit = true;
+      break;
+  }
 }
 
 console.log("Goodbye!");

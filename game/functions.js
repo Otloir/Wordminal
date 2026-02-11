@@ -155,3 +155,82 @@ export async function saveSession({ difficultyId, wordId, guessCount, win }) {
 
   return result.insertedId;
 }
+
+export async function getWinningSessions() {
+  const db = await connectDB();
+
+  return await db.collection("sessions").aggregate([
+    { $match: { win: true } },
+
+    {
+      $lookup: {
+        from: "words",
+        localField: "wordId",
+        foreignField: "_id",
+        as: "word"
+      }
+    },
+    { $unwind: "$word" },
+
+    {
+      $lookup: {
+        from: "difficulties",
+        localField: "difficultyId",
+        foreignField: "_id",
+        as: "difficulty"
+      }
+    },
+    { $unwind: "$difficulty" },
+
+    {
+      $project: {
+        _id: 0,
+        word: "$word.word",
+        difficulty: "$difficulty.name",
+        guessCount: 1
+      }
+    },
+    //sort by least → most guesses
+    { $sort: { guessCount: 1 } }
+  ]).toArray();
+}
+
+export async function getLast10Sessions() {
+  const db = await connectDB();
+
+  return await db.collection("sessions").aggregate([
+    { $sort: { _id: -1 } }, // newest first
+
+    { $limit: 10 },
+
+    {
+      $lookup: {
+        from: "words",
+        localField: "wordId",
+        foreignField: "_id",
+        as: "word"
+      }
+    },
+    { $unwind: "$word" },
+
+    {
+      $lookup: {
+        from: "difficulties",
+        localField: "difficultyId",
+        foreignField: "_id",
+        as: "difficulty"
+      }
+    },
+    { $unwind: "$difficulty" },
+
+    {
+      $project: {
+        _id: 0,
+        word: "$word.word",
+        difficulty: "$difficulty.name",
+        guessCount: 1,
+        win: 1
+      }
+    }
+  ]).toArray();
+}
