@@ -1,6 +1,6 @@
-# Lingon
+# Wordminal
 
-Lingon is a CLI-based (can run solely in the terminal) word guessing game inspired by Wordle, developed by three students for a collaborative Node.js project. The application challenges players to guess six-letter words within five attempts, using color-coded feedback to guide their guesses. It is built entirely with JavaScript and npm packages,
+Wordminal is a CLI-based (can run solely in the terminal) word guessing game inspired by Wordle, developed by three students for a collaborative Node.js project. The application challenges players to guess six-letter words within five attempts, using color-coded feedback to guide their guesses. It is built entirely with JavaScript and npm packages,
 
 
 ## Features
@@ -19,8 +19,8 @@ Lingon is a CLI-based (can run solely in the terminal) word guessing game inspir
 ### 1. clone the repo
 
 ```
-git clone https://github.com/Otloir/Lingon.git
-cd Lingon
+git clone https://github.com/Otloir/Wordminal.git
+cd Wordminal
 ```
 
 ### 2. Initialize npm
@@ -126,4 +126,5 @@ Original concept inspired by Wordle by Josh Wardle
 ## License
 
 This project is licensed under the MIT License.
+
 
