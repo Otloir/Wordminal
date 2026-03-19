@@ -62,7 +62,7 @@ node game.js
 ## Gameplay Flow
 #### Initialization Phase:
 
-1. The application displays the Lingon title screen
+1. The application displays the Wordminal title screen
 
 2. Instructions are presented explaining how the game works
 
